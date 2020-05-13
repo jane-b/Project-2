@@ -1,0 +1,31 @@
+h1 {
+  color: #56222E;
+}
+
+h3 {
+  color: #56222E;
+}
+
+div.text-box {
+  background-color: white;
+  opacity: 0.75;
+  border-radius: 8px;
+  z-index: 3;
+}
+
+div.sticky-bottom {
+  z-index: 2;
+}
+
+div.fixed-bottom {
+  z-index: 1;
+}
+
+div.background {
+  opacity: 0.15;
+}
+
+.btn-dark {
+  background-color: #56222E;
+  z-index: 4;
+}
