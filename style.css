@@ -6,10 +6,11 @@ h3 {
   color: #56222E;
 }
 
-div.text-box {
+.text-box {
   background-color: white;
   opacity: 0.75;
   border-radius: 8px;
+  margin: 1%;
   z-index: 3;
 }
 
