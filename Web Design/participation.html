@@ -10,8 +10,26 @@
     <!-- Bootstrap CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
+    <!-- Leaflet CSS & JS-->
+    <script
+    src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+    integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+    integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+    crossorigin=""></script>
+
+
+    <!-- d3 JavaScript -->
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    
+    
     <!-- Set up CSS Style sheet -->
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="css/style.css">
 
     <!-- Title of webpage -->
     <title>Wonder Women | Project 2 | Female Participation in the Workforce</title>
@@ -70,9 +88,7 @@
                     Map: Female Workforce Participation - Annual Breakdown by Continent and Workforce Participation Range
                     </b>
                 </h3>
-                <p>
-                --> [INSERT VISUALIZATION HERE] <--
-                </p>
+                <div id="fem-map"></div>
 
             </div>
         </div>
@@ -104,5 +120,9 @@
 <footer class="container sticky-bottom text-center">
     <p><small>© Wonder Women 2020</small></p> 
 </footer>
+
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script type="text/javascript" src="data/merged_workforce_data_geo.js"></script>
+<script type="text/javascript" src="JavaScript/logic_details.js"></script>
 
 </body>

@@ -1,19 +1,19 @@
-body {
+/* body {
   padding: 0;
   margin: 0;
   height: 100%;
-}
-#map,
+} */
+/* #map,
 body,
 html {
   height: 100%;
   width: 100%;
-}
-.leaflet-popup-content {
+} */
+/* .leaflet-popup-content {
   text-align: center;
 }
 /* CSS from the Leaflet-Choropleth documentation */
-.legend {
+/* .legend {
   padding: 6px 8px;
   font: 12px verdana;
   font-weight: bold;
@@ -75,11 +75,11 @@ h4 {
   padding: none;
   font-weight: bold;
   font-style: italic;
-  color: #ffd32a;
-}
+  color: #ffd32a; */
+/* }
 .slidecontainer {
   width: 100%; /* Width of the outside container */
-}
+} */
 /* The slider itself */
 .slider {
   -webkit-appearance: none;  /* Override default CSS styles */
@@ -104,10 +104,10 @@ h4 {
   height: 25px; /* Slider handle height */
   background: #bd5742; /* Green background */
   cursor: pointer; /* Cursor on hover */
-}
+/* }
 .slider::-moz-range-thumb {
-  width: 25px; /* Set a specific slider handle width */
-  height: 25px; /* Slider handle height */
+  /* width: 25px; /* Set a specific slider handle width */
+  /* height: 25px; /* Slider handle height */
   background: #bd5742; /* Green background */
-  cursor: pointer; /* Cursor on hover */
-}
+  cursor: pointer; Cursor on hover */
+}  
