@@ -10,8 +10,26 @@
     <!-- Bootstrap CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
+    <!-- Leaflet CSS & JS-->
+    <script
+    src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+    integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+    integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+    crossorigin=""></script>
+
+
+    <!-- d3 JavaScript -->
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+
+
     <!-- Set up CSS Style sheet -->
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="css/style.css">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
     <!-- Title of webpage -->
@@ -95,15 +113,17 @@
         <div class="row fourth-row">
             <!-- Lefthand column -->
             <div class="col-xs-6 col-md-6">
+            <!-- <div class="col"> -->
+
                 <h3><b> Global Female Workforce Participation Over Time</b></h3>
-                <div id="map#1"></div>
+                <div id="fem-map"></div>
                     <a class="btn btn-dark" href="participation.html" role="button">View details »</a>
             </div>
 
             <!-- Righthand column -->
             <div class="col-xs-6 col-md-6">
                 <h3><b>Global GDP Growth Over Time</b></h3>
-                <div id="map#2"></div>
+                <div id="gdp-map"></div>
                     <a class="btn btn-dark" href="gdp.html" role="button">View details »</a>
             </div>
         </div>
@@ -139,6 +159,11 @@
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <script src="linegraph.js"></script>
 <script src="barchart.js"></script>
+<script type="text/javascript" src="data/merged_workforce_data_geo.js"></script>
+<script type="text/javascript" src="JavaScript/logic_summary.js"></script>
+<script type="text/javascript" src="data/merged_GDP_data_geo.js"></script>
+<script type="text/javascript" src="JavaScript/SliderControl.js"></script>
+<script type="text/javascript" src="JavaScript/summary_gdp_choropleth.js"></script> 
 
 
 </body>
