@@ -1,16 +1,16 @@
 var geojson;
 
-var myMap = L.map('fem-map').setView([51.5074, -0.1278], 2);
+var myMapFem = L.map('fem-map-sum').setView([51.5074, -0.1278], 1);
 
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + "pk.eyJ1IjoiZGFuaWVsbGVobyIsImEiOiJjazlweGpyZTAwZjVvM3BycmM1OTM2MHk0In0.219ncmTIvxFW-tKUB_kDsg", {
     id: 'mapbox/light-v9',
     attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
     tileSize: 512,
     zoomOffset: -1
-}).addTo(myMap);
+}).addTo(myMapFem);
 
 
-function getColor(d) {
+function getColorFem(d) {
   return d > 42  ? '#56222e' :
          d > 36  ? '#803345' :
          d > 26  ? '#be5b72' :
@@ -18,46 +18,47 @@ function getColor(d) {
                    '#f2ddd9' ;
 }
 
-function style(feature) {
+function styleFem(feature) {
     return {
-        fillColor: getColor(feature.properties.fem_laborforce),
-        weight: 2,
-        opacity: 1,
+        fillColor: getColorFem(feature.properties.fem_laborforce),
+        weight: 1,
+        opacity: 2,
         color: 'white',
-        dashArray: '3',
+        // dashArray: '3',
         fillOpacity: 1
     };
 }
 
 // // Happens on mouse hover
-function highlight(e) {
-    var layer = e.target;
-    layer.setStyle({
+function highlightFem(e) {
+    var layer_fem = e.target;
+    layer_fem.setStyle({
         weight: 3,
         color: '#ffd32a',
     });
     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-        layer.bringToFront();
+        layer_fem.bringToFront();
     }
-    displayInfo.update(layer.feature.properties);
+    displayInfoFem.update(layer_fem.feature.properties);
   }
 
  //// Happens on mouse out  
-  function reset(e) {
+  function resetFem(e) {
     geojson.resetStyle(e.target);
-    displayInfo.update();
+    displayInfoFem.update();
   }
 
-  function zoomToCountry(e) {
-    myMap.fitBounds(e.target.getBounds());
+// Click listener that zooms to country
+  function zoomToCountryFem(e) {
+    myMapFem.fitBounds(e.target.getBounds());
   }
 
 
-  function onEachFeature(feature, layer) {
-    layer.on({
-        mouseover: highlight,
-        mouseout: reset,
-        click: zoomToCountry
+  function onEachFeature(feature, layer_fem) {
+    layer_fem.on({
+        mouseover: highlightFem,
+        mouseout: resetFem,
+        click: zoomToCountryFem
     });
   }
 
@@ -69,7 +70,7 @@ function highlight(e) {
     onAdd: function (map) {
         var llBounds = map.getBounds();
         var container = L.DomUtil.create('div', 'extentControl');
-        $(container).css('background', 'url(css/extend.png) no-repeat 50% 50%').css('width', '26px').css('height', '26px').css('outline', '1px black');
+        $(container).css('background', 'url(../static/css/extend.png) no-repeat 50% 50%').css('width', '26px').css('height', '26px').css('outline', '1px black');
         $(container).on('click', function () {
             map.fitBounds(llBounds);
         });
@@ -77,7 +78,7 @@ function highlight(e) {
        }
     })
     
-    myMap.addControl(new extentControl());
+    myMapFem.addControl(new extentControl());
 
 
 
@@ -94,12 +95,12 @@ function highlight(e) {
         colors = [0,18, 26, 36, 42],
         labels = [];
 
-    div.innerHTML += '<h4>Female Laborforce <br> (% of Total Labor Force)</h4>';
+    div.innerHTML += '<h7>FEMALE LABORFORCE</h7><br><h10>(% of Total Labor Force)</h10>';
 
     // Loops through GDP data and grabs colors for each range and puts them in the legend’s key
     for (var i = 0; i < colors.length; i++) {
      div.innerHTML +=
-        '<i style="background:' + getColor(colors[i] + 1) + '"></i>'  +
+        '<i style="background:' + getColorFem(colors[i] + 1) + '"></i>'  +
          colors[i] + (colors[i + 1] ? '&ndash;' + colors[i + 1] + '<br>' : '+');
 
     }
@@ -107,77 +108,68 @@ function highlight(e) {
     return div;
   };
 
-   legend.addTo(myMap);
-
-
-   //Filter display of the map by particular year
-   function showData(p_year) {
-    geojson =  L.geoJson(workforceData, {
-      filter: function(feature, layer) {
-        return feature.properties.year == p_year;},
-      style: style,
-      onEachFeature: onEachFeature}
-      ).addTo(myMap)};
+   legend.addTo(myMapFem);
 
 
 
   // On hover control that displays information about hovered upon country
-  var displayInfo = L.control();
+  var displayInfoFem = L.control();
 
-  displayInfo.onAdd = function (map) {
-      this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+  displayInfoFem.onAdd = function (map) {
+      this._div = L.DomUtil.create('div', 'infoside'); // create a div with a class "info"
       this.update();
       return this._div;
   }; 
   
 // Passes properties of hovered upon country and displays it in the control
-displayInfo.update = function (props) {
+displayInfoFem.update = function (props) {
 
-    this._div.innerHTML = '<h2>Female Laborforce</h2>' +  (props ?
+    this._div.innerHTML = '<h6>FEMALE LABORFORCE</h6>' +  (props ?
         '<h3>' + props.year + '</h3>' + 
-        '<b>' + 'Female laborforce: ' + '</b>' + props.fem_laborforce + '%' +'<br />' +
-        '<b>' +  'Country: ' + '</b>' + props.country_name  +'<br />' +
-        '<b>' +  'Continent: ' + '</b>' + props.continent_name  +'<br />' 
+        '<b>' + 'FEMALE LABORFORCE: ' + '</b>' + props.fem_laborforce + '%' +'<br />' +
+        '<b>' +  'COUNTRY: ' + '</b>' + props.country_name  +'<br />' +
+        '<b>' +  'CONTINENT: ' + '</b>' + props.continent_name  +'<br />' 
         : 'Hover over a country');
 };
 
-
-
-
-
-displayInfo.addTo(myMap);
-
-
+displayInfoFem.addTo(myMapFem);
 
 
  // Happens on mouse hover
- function highlight(e) {
-    var layer = e.target;
+ function highlightFem(e) {
+    var layer_fem = e.target;
 
-    layer.setStyle({
+    layer_fem.setStyle({
         weight: 3,
         color: '#ffd32a'
     });
 
     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-        layer.bringToFront();
+        layer_fem.bringToFront();
     }
 
     // Updates custom legend on hover
-    displayInfo.update(layer.feature.properties);
+    displayInfoFem.update(layer_fem.feature.properties);
   }
 
   // Happens on mouse out
-  function reset(e) {
+  function resetFem(e) {
     geojson.resetStyle(e.target);
     // Resets custom legend when user unhovers
-    displayInfo.update();
+    displayInfoFem.update();
   }
 
+  //Filter display of the map by particular year
+  function showDataFem(p_year) {
+    geojson =  L.geoJson(workforceData, {
+    filter: function(feature, layer_fem) {
+      return feature.properties.year == p_year;},
+    style: styleFem,
+    onEachFeature: onEachFeature}
+    ).addTo(myMapFem)};
 
 
-
-  function processData(data) {
+  function processDataFem(data) {
     var timestamps = [];
     var min = Infinity; 
     var max = -Infinity;
@@ -203,42 +195,42 @@ displayInfo.addTo(myMap);
       max : max
     }
   }
-function createSliderUI(slider_data) {
-  var sliderControl = L.control({ position: 'bottomleft'} );
-  sliderControl.onAdd = function(map) {
-    var slider = L.DomUtil.create("input", "slider");
-    L.DomEvent.addListener(slider, 'mousedown', function(e) { 
+function createSliderUIFem(slider_data_fem) {
+  var sliderControlFem = L.control({ position: 'bottomleft'} );
+  sliderControlFem.onAdd = function(map) {
+    var sliderFem = L.DomUtil.create("input", "slider");
+    L.DomEvent.addListener(sliderFem, 'mousedown', function(e) { 
       L.DomEvent.stopPropagation(e); 
     });
-    $(slider)
+    $(sliderFem)
       .attr({'type':'range', 
-        'max': slider_data.max, 
+        'max': slider_data_fem.max, 
         'min': 1990, 
         'step': 1,
-        'value': String(slider_data.max)})
+        'value': String(slider_data_fem.max)})
         .on('input change', function() {
-        showData($(this).val().toString());
-        $(".temporal-legend").text(this.value);
+        showDataFem($(this).val().toString());
+        $(".temporal-legend-fem").text(this.value);
       });
-    return slider;
+    return sliderFem;
   }
-sliderControl.addTo(myMap)
-createTemporalLegend(slider_data.max);
+sliderControlFem.addTo(myMapFem)
+createTemporalLegendFem(slider_data_fem.max);
 }
 
-var slider_data = processData(workforceData);
+var slider_data_fem = processDataFem(workforceData);
 
-showData(slider_data.max);
+showDataFem(slider_data_fem.max);
 
-createSliderUI(slider_data);
+createSliderUIFem(slider_data_fem);
 
-function createTemporalLegend(startTimestamp) {
-  var temporalLegend = L.control({ position: 'bottomleft' }); 
-  temporalLegend.onAdd = function(map) { 
-    var output = L.DomUtil.create("output", "temporal-legend");
+function createTemporalLegendFem(startTimestamp) {
+  var temporalLegendFem = L.control({ position: 'bottomleft' }); 
+  temporalLegendFem.onAdd = function(map) { 
+    var output = L.DomUtil.create("output", "temporal-legend-fem");
     $(output).text(startTimestamp)
     return output; 
   }
-  temporalLegend.addTo(myMap); 
+  temporalLegendFem.addTo(myMapFem); 
 }
 

@@ -1,71 +1,14 @@
-var geoWorkforce = "data/merged_GDP_data_geo.js"
 var geojson;
 
-/*
-var layers = {
-    year1990: new L.LayerGroup(),
-    year2000: new L.LayerGroup(),
-    year2010: new L.LayerGroup(),
-    year2018: new L.LayerGroup(),
-    africa: new L.LayerGroup(),
-    asia: new L.LayerGroup(),
-    europe: new L.LayerGroup(),
-    northamerica: new L.LayerGroup(),
-    oceania: new L.LayerGroup(),
-    southamerica: new L.LayerGroup()
-  };
-  // Create a map object
-  var myMap = L.map("map", {
-    center: [ 51.5074, -0.1278],
-    zoom: 2,
-    layers: [
-        layers.africa,
-        layers.asia,
-        layers.europe,
-        layers.northamerica,
-        layers.oceania,
-        layers.southamerica,
-        layers.year1990,
-        layers.year2000,
-        layers.year2010,
-        layers.year2018
-    ]
-  });
-*/
-
-var myMap = L.map('gdp-map').setView([51.5074, -0.1278], 2);
+var myMap = L.map('gdp-map-sum').setView([51.5074, -0.1278], 1);
 
 // Create the tile layer that will be the background of our map
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + "pk.eyJ1Ijoic29uYWxwYXRlbDIxMTciLCJhIjoiY2s5ajkyZHp6MDRqaTNscHBobnJwazBhbyJ9.7tawAY0DsmQMQDBDVW6nBw", {
-    //id: 'mapbox.dark',
     attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
-   id: 'mapbox/light-v9',
+    id: 'mapbox/light-v9',
     tileSize: 512,
-    //maxZoom: 4,
-    //minZoom: 3,
     zoomOffset: -1
 }).addTo(myMap);
-
-/*
-var baseMaps = {
-    // "Satellite": satellite,
-    "1990": layers.year1990,
-    "2000": layers.year2000,
-    "2010": layers.year2010,
-    "2018": layers.year2018
-  };
-  var overlayMaps = {
-    "Africa": layers.africa,
-    "Asia": layers.asia,
-    "Europe": layers.europe,
-    "North America": layers.northamerica,
-    "Oceania": layers.oceania,
-    "South America": layers.southamerica
-  };
-  L.control.layers(baseMaps, overlayMaps, {
-    collapsed: false
-  }).addTo(myMap);
-*/
 
 function getColor(d) {
     return d > 9 ? '#3e280e' :
@@ -120,7 +63,7 @@ function highlight(e) {
     onAdd: function (map) {
         var llBounds = map.getBounds();
         var container = L.DomUtil.create('div', 'extentControl');
-        $(container).css('background', 'url(css/extend.png) no-repeat 50% 50%').css('width', '26px').css('height', '26px').css('outline', '1px black');
+        $(container).css('background', 'url(../static/css/extend.png) no-repeat 50% 50%').css('width', '26px').css('height', '26px').css('outline', '1px black');
         $(container).on('click', function () {
             map.fitBounds(llBounds);
         });
@@ -131,9 +74,6 @@ function highlight(e) {
     
 
   function onEachFeature(feature, layer) {
-    layer.bindPopup("Country: " + feature.properties.country_name + "<br>GDP Growth:<br>" +
-           feature.properties.gdp_growth + "%" +
-          "<br>Continent:" + feature.properties.continent_name);
     layer.on({
           mouseover: highlight,
           click: zoomToCountry,
@@ -141,11 +81,6 @@ function highlight(e) {
     })
   }
 
-   // style: style,
-   // onEachFeature: onEachFeature
-  //}).addTo(myMap);
-
-  // Legend
   // Legend
   var legend = L.control({
     position: 'bottomright'
@@ -157,7 +92,7 @@ function highlight(e) {
         colors = [-150,1, 2, 5,9],
         labels = [];
 
-    div.innerHTML += '<h4>WORLD GDP GROWTH<br>(% of Total GDP Growth)</h4>';
+    div.innerHTML += '<h7>WORLD GDP GROWTH</h7><br><h10>(% of Total GDP Growth)</h10>';
 
     // Loops through GDP data and grabs colors for each range and puts them in the legend's key
     for (var i = 0; i < colors.length; i++) {
@@ -174,7 +109,7 @@ function highlight(e) {
   // On hover control that displays information about hovered upon country
   var displayInfo = L.control();
   displayInfo.onAdd = function (map) {
-      this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+      this._div = L.DomUtil.create('div', 'infoside'); // create a div with a class "info"
       this.update();
       return this._div;
   }; 
@@ -182,7 +117,7 @@ function highlight(e) {
   
 // Passes properties of hovered upon country and displays it in the control
 displayInfo.update = function (props) {
-    this._div.innerHTML = '<h2>WORLD GDP GROWTH</h2>' +  (props ?
+    this._div.innerHTML = '<h6>WORLD GDP GROWTH</h6>' +  (props ?
         '<h3>' + props.year + '</h3>' + '<b>' +  'GDP GROWTH: ' + '</b>' + props.gdp_growth + '%' +'<br />'
         +'<b>' + ' COUNTRY: ' + '</b>' + props.country_name + '<br />'
             + '<b>' + 'CONTINENT: ' + '</b>' + props.continent_name + '<br />'

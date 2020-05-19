@@ -1,17 +1,17 @@
-//var geoWorkforce = "static/data/merged_GDP_data_geo.js"
 var geojson;
+
+// Create the tile layer that will be the background of our map
+var outdoors = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
+    attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+    maxZoom: 18,
+    id: "mapbox.streets",
+    accessToken: "pk.eyJ1Ijoic29uYWxwYXRlbDIxMTciLCJhIjoiY2s5ajkyZHp6MDRqaTNscHBobnJwazBhbyJ9.7tawAY0DsmQMQDBDVW6nBw"
+});
 
 var grayscale = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/256/{z}/{x}/{y}?access_token={accessToken}", {
     attribution: "Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"http://mapbox.com\">Mapbox</a>",
     maxZoom: 18,
     id: "mapbox.light",
-    accessToken: "pk.eyJ1Ijoic29uYWxwYXRlbDIxMTciLCJhIjoiY2s5ajkyZHp6MDRqaTNscHBobnJwazBhbyJ9.7tawAY0DsmQMQDBDVW6nBw"
-});
-
-var outdoors = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
-    attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
-    maxZoom: 18,
-    id: "mapbox.streets",
     accessToken: "pk.eyJ1Ijoic29uYWxwYXRlbDIxMTciLCJhIjoiY2s5ajkyZHp6MDRqaTNscHBobnJwazBhbyJ9.7tawAY0DsmQMQDBDVW6nBw"
 });
 
@@ -26,9 +26,9 @@ var layers = {
   // Create a map object
   var myMap = L.map("gdp-map", {
     center: [ 51.5074, -0.1278],
-    zoom: 2,
+    zoom: 1.5,
     layers: [
-     //   grayscale,
+        grayscale,
         outdoors,
         layers.africa,
         layers.asia,
@@ -40,25 +40,11 @@ var layers = {
   });
 
 
-//var myMap = L.map('map').setView([51.5074, -0.1278], 2);
-/*
-// Create the tile layer that will be the background of our map
-L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + "pk.eyJ1Ijoic29uYWxwYXRlbDIxMTciLCJhIjoiY2s5ajkyZHp6MDRqaTNscHBobnJwazBhbyJ9.7tawAY0DsmQMQDBDVW6nBw", {
-    //id: 'mapbox.dark',
-    attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
-   id: 'mapbox/light-v9',
-    tileSize: 512,
-    //maxZoom: 4,
-    //minZoom: 3,
-    zoomOffset: -1
-}).addTo(myMap);
-*/
-
 var baseMaps = {
-    // "Satellite": satellite,
     Outdoor : outdoors,
     Grayscale: grayscale
   };
+
   var overlayMaps = {
     "Africa": layers.africa,
     "Asia": layers.asia,
@@ -81,14 +67,15 @@ function getColor(d) {
            d > 0  ? '#e7c297' :
                      '#faf3ea' ;
 }
+
 function style(feature) {
     return {
         fillColor: getColor(feature.properties.gdp_growth),
         weight: 2,
         opacity: 1,
         color: 'white',
-        //dashArray: '3',
-        fillOpacity: 0.3
+        dashArray: '3',
+        fillOpacity: 0.9
     };
 }
 // // Happens on mouse hover
@@ -101,14 +88,11 @@ function highlight(e) {
     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
         layer.bringToFront();
     }
-   // displayInfo.update(layer.feature.properties);
   }
-
 
   //// Happens on mouse out
   function reset(e) {
     geojson.resetStyle(e.target);
-   // displayInfo.update();
   }
 
   // Click listener that zooms to country
@@ -124,7 +108,7 @@ function highlight(e) {
     onAdd: function (map) {
         var llBounds = map.getBounds();
         var container = L.DomUtil.create('div', 'extentControl');
-        $(container).css('background', 'url(static/css/extend.png) no-repeat 50% 50%').css('width', '26px').css('height', '26px').css('outline', '1px black');
+        $(container).css('background', 'url(../static/css/extend.png) no-repeat 50% 50%').css('width', '26px').css('height', '26px').css('outline', '1px black');
         $(container).on('click', function () {
             map.fitBounds(llBounds);
         });
@@ -135,9 +119,9 @@ function highlight(e) {
     
     
   function onEachFeature(feature, layer) {
-    layer.bindPopup("YEAR: " + feature.properties.year + "<br>Country:<br>" +
+    layer.bindPopup("Year: " + feature.properties.year + "<br>Country: " +
            feature.properties.country_name  +
-           "<br>Continent:" + feature.properties.continent_name +"<br>GDP Growth:<br>" + 
+           "<br>Continent: " + feature.properties.continent_name +"<br>GDP Growth: " + 
            feature.properties.gdp_growth + "%");
     layer.on({
           mouseover: highlight,
@@ -166,7 +150,7 @@ function highlight(e) {
         colors = [-150,1, 2,5,9],
         labels = [];
 
-    div.innerHTML += '<h4>WORLD GDP GROWTH<br>(% of Total GDP Growth)</h4>';
+    div.innerHTML += '<h6>WORLD GDP GROWTH<br>(% of Total GDP Growth)</h6>';
 
     // Loops through GDP data and grabs colors for each range and puts them in the legend's key
     for (var i = 0; i < colors.length; i++) {
@@ -191,20 +175,16 @@ function highlight(e) {
   
 // Passes properties of hovered upon country and displays it in the control
 displayInfo.update = function (props) {
-    this._div.innerHTML = '<h2>WORLD GDP GROWTH</h2>' +  (props ?
+    this._div.innerHTML = '<h6>WORLD GDP GROWTH</h6>' +  (props ?
         '<h3>' + props.year + '</h3>' + '<b>' +  'GDP GROWTH: ' + '</b>' + props.gdp_growth + '%' +'<br />'
         +'<b>' + ' COUNTRY: ' + '</b>' + props.country_name + '<br />'
             + '<b>' + 'CONTINENT: ' + '</b>' + props.continent_name + '<br />'
         : 'Hover over a country');
 };
-//displayInfo.addTo(myMap);
+
 
 function showData(p_year) {
-  // geojson =  L.geoJson(countriesData, {
-  //   filter: function(feature, layer) {
-  //     return feature.properties.year == p_year;},
-  //   style: style,
-  //   onEachFeature: onEachFeature},
+
     geojson =  L.geoJson(countriesData, {
       filter: function(feature, layer) {
         return feature.properties.continent_name == "Africa" & feature.properties.year == p_year;},
