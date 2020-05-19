@@ -28,7 +28,7 @@ var layers = {
   // Create a map object
   var myMap = L.map("fem-map", {
     center: [ 51.5074, -0.1278],
-    zoom: 2,
+    zoom: 1.5,
     layers: [
         outdoors,
         grayscale,
@@ -74,7 +74,7 @@ function style(feature) {
         opacity: 2,
         color: 'white',
         dashArray: '3',
-        fillOpacity: 1
+        fillOpacity: 0.9
     };
 }
 // // Happens on mouse hover
@@ -123,7 +123,7 @@ function highlight(e) {
     onAdd: function (map) {
         var llBounds = map.getBounds();
         var container = L.DomUtil.create('div', 'extentControl');
-        $(container).css('background', 'url(css/extend.png) no-repeat 50% 50%').css('width', '26px').css('height', '26px').css('outline', '1px black');
+        $(container).css('background', 'url(../static/css/extend.png) no-repeat 50% 50%').css('width', '26px').css('height', '26px').css('outline', '1px black');
         $(container).on('click', function () {
             map.fitBounds(llBounds);
         });
@@ -144,7 +144,7 @@ function highlight(e) {
     var div = L.DomUtil.create('div', 'info legend'),
         colors = [0,18,26,36,42],
         labels = [];
-    div.innerHTML += '<h4>Female Laborforce <br> (% of Total Labor Force)</h4>';
+    div.innerHTML += '<h6>Female Laborforce <br> (% of Total Labor Force)</h6>';
     // Loops through GDP data and grabs colors for each range and puts them in the legend's key
     for (var i = 0; i < colors.length; i++) {
      div.innerHTML +=
